@@ -6,9 +6,13 @@ import PubNub from 'pubnub';
 import { PubNubProvider } from 'pubnub-react';
 import reportWebVitals from './reportWebVitals';
 
+if (!process.env.REACT_APP_PUBLISH_KEY || !process.env.REACT_APP_SUBSCRIBE_KEY) {
+  throw new Error("PubNub keys are not set in environment variables");
+}
+
 const pubnub = new PubNub({
-  publishKey: 'pub-c-75350107-b960-494a-8f19-dd1e98236eef',
-  subscribeKey: 'sub-c-70e805dd-6ce9-419c-aed6-9873b4fed81a',
+  publishKey: process.env.REACT_APP_PUBLISH_KEY!,
+  subscribeKey: process.env.REACT_APP_SUBSCRIBE_KEY!,
   userId: '001' 
 });
 

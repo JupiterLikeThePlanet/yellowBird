@@ -16,3 +16,7 @@ npm install npm@latest || npm install -g npm@latest
 
 - npm install
 - npm start
+
+
+issues with eslint:
+npm update eslint-plugin-jest @typescript-eslint/eslint-plugin react-scripts eslint-config-react-app
