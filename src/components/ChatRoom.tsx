@@ -58,7 +58,7 @@ const ChatRoom = () => {
         // debugger; 
         pubnub.publish({
             channel: 'yellowBirdChat',
-            message: message
+            message: { id: Date.now().toString(), text: message, senderId: 'senderID', timestamp: new Date() }
         }).then((response: PubNub.PublishResponse) => {
             console.log("Message Published", response);
         }).catch((error: Error) => {
