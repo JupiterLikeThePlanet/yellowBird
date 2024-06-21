@@ -14,45 +14,58 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [channel] = useState<string>('yellowBirdChat');
 
-    // useEffect(() => {
-    //     const handleMessage = (event: PubNub.MessageEvent) => {
-    //         const newMessage: Message = {
-    //             id: event.message.id,
-    //             text: event.message.text,
-    //             senderId: event.message.senderId,
-    //             timestamp: new Date(Number(event.timetoken) / 10000)
-    //         };
-    //         console.log("Received message:", event.message);
-    //         setMessages(prevMessages => [...prevMessages, newMessage]);
-    //     };
-
-    //     pubnub.addListener({ message: handleMessage });
-    //     pubnub.subscribe({ channels: [channel] });
-
-    //     return () => pubnub.unsubscribeAll();
-    // }, [pubnub, channel]);
-
     useEffect(() => {
-        function handleMessage(event) {
-            console.log('Received:', event.message);
-        }
-    
-        pubnub.addListener({ message: handleMessage });
-        pubnub.subscribe({ channels: ['yellowBirdChat'] });
-    
-        return () => {
-            pubnub.unsubscribeAll();
+        // debugger
+        const handleMessage = (event: PubNub.MessageEvent) => {
+            const newMessage: Message = {
+                id: event.message.id,
+                text: event.message.text,
+                senderId: event.message.senderId,
+                timestamp: new Date(Number(event.timetoken) / 10000)
+            };
+            console.log("Received message:", event.message);
+            setMessages(prevMessages => [...prevMessages, newMessage]);
         };
-    }, []);
 
-    function sendMessage(message) {
+        pubnub.addListener({ message: handleMessage });
+        pubnub.subscribe({ channels: [channel] });
+
+        return () => pubnub.unsubscribeAll();
+    }, [pubnub, channel]);
+
+    // useEffect(() => {
+    //     function handleMessage(event) {
+    //         console.log('Received:', event.message);
+    //     }
+    
+    //     pubnub.addListener({ message: handleMessage });
+    //     pubnub.subscribe({ channels: ['yellowBirdChat'] });
+    
+    //     return () => {
+    //         pubnub.unsubscribeAll();
+    //     };
+    // }, []);
+
+    // function sendMessage(message: string) void {
+    //     // debugger
+    //     pubnub.publish({
+    //         channel: 'yellowBirdChat',
+    //         message: message
+    //     });
+    // }
+
+    function sendMessage(message: string): void {
+        // debugger; 
         pubnub.publish({
             channel: 'yellowBirdChat',
             message: message
+        }).then((response: PubNub.PublishResponse) => {
+            console.log("Message Published", response);
+        }).catch((error: Error) => {
+            console.error("Failed to publish message", error);
         });
     }
-    
-    
+
 
     return (
         <div>
@@ -65,8 +78,6 @@ const ChatRoom = () => {
                 ))}
             </ul>
             <button onClick={() => sendMessage("Hello World!")}>Send Message</button>
-
-        
         </div>
     );
 };
