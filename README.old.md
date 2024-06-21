@@ -26,3 +26,15 @@ npm install npm@latest || npm install -g npm@latest
 
 issues with eslint:
 npm update eslint-plugin-jest @typescript-eslint/eslint-plugin react-scripts eslint-config-react-app
+
+
+
+
+# TESTS
+- Using Jest with `ts-jest` for handling TypeScript
+- React Testing Library is used for rendering components in the test environment.
+
+To run unit tests:
+```npm test```
+
+>> problem with files starting with ._
