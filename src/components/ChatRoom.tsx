@@ -15,7 +15,6 @@ const ChatRoom = () => {
     const [channel] = useState<string>('yellowBirdChat');
 
     useEffect(() => {
-        // debugger
         const handleMessage = (event: PubNub.MessageEvent) => {
             const newMessage: Message = {
                 id: event.message.id,
@@ -24,9 +23,6 @@ const ChatRoom = () => {
                 timestamp: new Date(Number(event.timetoken) / 10000)
             };
             console.log("Received message:", event.message);
-            // if(messages!.text !== newMessage.text){
-                // setMessages(prevMessages => [...prevMessages, newMessage]);
-            // }
             setMessages(prevMessages => {
                 const exists = prevMessages.find(msg => msg.id === newMessage.id);
                 return exists ? prevMessages : [...prevMessages, newMessage];
@@ -47,7 +43,6 @@ const ChatRoom = () => {
 
 
     function sendMessage(message: string): void {
-        // debugger; 
         pubnub.publish({
             channel: 'yellowBirdChat',
             message: { id: Date.now().toString(), text: message, senderId: 'senderID', timestamp: new Date() }
