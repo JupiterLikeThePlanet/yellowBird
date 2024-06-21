@@ -4,17 +4,22 @@ import './index.css';
 import App from './App';
 import PubNub from 'pubnub';
 import { PubNubProvider } from 'pubnub-react';
+import { v4 as uuidv4 } from 'uuid';
 import reportWebVitals from './reportWebVitals';
 
 if (!process.env.REACT_APP_PUBLISH_KEY || !process.env.REACT_APP_SUBSCRIBE_KEY) {
   throw new Error("PubNub keys are not set in environment variables");
 }
 
+const userId = uuidv4();
+
 const pubnub = new PubNub({
   publishKey: process.env.REACT_APP_PUBLISH_KEY!,
   subscribeKey: process.env.REACT_APP_SUBSCRIBE_KEY!,
-  userId: '001' 
+  userId: userId 
 });
+
+console.log(">>>>>> userId: " + userId)
 
 
 const root = ReactDOM.createRoot(
