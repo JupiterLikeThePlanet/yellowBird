@@ -65,13 +65,9 @@ const ChatRoom = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => sendMessage("Hello World!")}>Send Message</button>
+            <button onClick={() => sendMessage("There's no crying in baseball!")}>Send Message</button>
         </div>
     );
 };
 
 export default ChatRoom;
-
-{/* <li key={message.id}>
-    {message.senderId}: {message.text} ({message.timestamp.toLocaleTimeString()})
-</li> */}

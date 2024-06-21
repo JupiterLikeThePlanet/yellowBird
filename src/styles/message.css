@@ -1,0 +1,30 @@
+.message {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    background-color: #f4f4f8;
+    width: fit-content;
+    max-width: 80%;
+}
+
+.my-message {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+}
+
+.other-message {
+    background-color: #ffffff;
+    align-self: flex-start;
+}
+
+.message-info {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.message-content p {
+    margin: 0;
+    word-wrap: break-word;
+    color: black;
+}
