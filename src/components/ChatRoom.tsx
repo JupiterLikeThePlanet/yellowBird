@@ -24,35 +24,27 @@ const ChatRoom = () => {
                 timestamp: new Date(Number(event.timetoken) / 10000)
             };
             console.log("Received message:", event.message);
-            setMessages(prevMessages => [...prevMessages, newMessage]);
+            // if(messages!.text !== newMessage.text){
+                // setMessages(prevMessages => [...prevMessages, newMessage]);
+            // }
+            setMessages(prevMessages => {
+                const exists = prevMessages.find(msg => msg.id === newMessage.id);
+                return exists ? prevMessages : [...prevMessages, newMessage];
+            });
+            
         };
 
         pubnub.addListener({ message: handleMessage });
         pubnub.subscribe({ channels: [channel] });
 
-        return () => pubnub.unsubscribeAll();
+        // return () => pubnub.unsubscribeAll();
+        return () => {
+            pubnub.removeListener({ message: handleMessage });
+            pubnub.unsubscribeAll();
+        };
     }, [pubnub, channel]);
 
-    // useEffect(() => {
-    //     function handleMessage(event) {
-    //         console.log('Received:', event.message);
-    //     }
-    
-    //     pubnub.addListener({ message: handleMessage });
-    //     pubnub.subscribe({ channels: ['yellowBirdChat'] });
-    
-    //     return () => {
-    //         pubnub.unsubscribeAll();
-    //     };
-    // }, []);
 
-    // function sendMessage(message: string) void {
-    //     // debugger
-    //     pubnub.publish({
-    //         channel: 'yellowBirdChat',
-    //         message: message
-    //     });
-    // }
 
     function sendMessage(message: string): void {
         // debugger; 
