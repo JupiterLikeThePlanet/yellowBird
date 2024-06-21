@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
+import Message from './Message'; 
 
 interface Message {
     id: string;
@@ -60,7 +61,7 @@ const ChatRoom = () => {
             <ul>
                 {messages.map((message) => (
                     <li key={message.id}>
-                        {message.senderId}: {message.text} ({message.timestamp.toLocaleTimeString()})
+                        <Message message={message} />
                     </li>
                 ))}
             </ul>
@@ -70,3 +71,7 @@ const ChatRoom = () => {
 };
 
 export default ChatRoom;
+
+{/* <li key={message.id}>
+    {message.senderId}: {message.text} ({message.timestamp.toLocaleTimeString()})
+</li> */}
