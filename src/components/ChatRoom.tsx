@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
 import Message from './Message'; 
+import ChatInput from './ChatInput';
 
 interface Message {
     id: string;
@@ -58,6 +59,7 @@ const ChatRoom = () => {
     return (
         <div>
             <h1>Chat Room</h1>
+            <ChatInput />
             <ul>
                 {messages.map((message) => (
                     <li key={message.id}>
