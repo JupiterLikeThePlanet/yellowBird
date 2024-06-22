@@ -59,7 +59,7 @@ const ChatRoom = () => {
     return (
         <div>
             <h1>Chat Room</h1>
-            <ChatInput />
+            <ChatInput onSendMessage={sendMessage} />
             <ul>
                 {messages.map((message) => (
                     <li key={message.id}>
