@@ -67,7 +67,6 @@ const ChatRoom = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => sendMessage("There's no crying in baseball!")}>Send Message</button>
         </div>
     );
 };
