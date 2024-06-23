@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import EmojiPicker from 'emoji-picker-react'; 
+import  EmojiPicker, { IEmojiData, EmojiClickData } from 'emoji-picker-react'; 
 import '../styles/chatInput.css';
 
 interface ChatInputProps {
     onSendMessage: (message: string) => void;
 }
 
+interface EmojiObject {
+    emoji: string;
+}
+
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     const [message, setMessage] = useState('');
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     ///// for single line input ///////////////////////////////////////////////////////////////
     // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +43,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     // />
 
 
-    ///////////////////////////////////////////////////////////////////////////////
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     ///// for mulit line input textArea ///////////////////////////////////////////////////////////////
         const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
             setMessage(event.target.value);
@@ -63,6 +67,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
         // />
     ///////////////////////////////////////////////////////////////////////////////
 
+    // const onEmojiClick = (event: React.MouseEvent, emojiObject: EmojiObject) => {
+    //     setMessage(prevMessage => prevMessage + emojiObject.emoji);
+    //     setShowEmojiPicker(false);
+    // };
+
+    const onEmojiClick = (emojiData: EmojiClickData, event: React.MouseEvent<Element, MouseEvent>) => {
+        setMessage(prevMessage => prevMessage + emojiData.emoji);
+        setShowEmojiPicker(false);
+    };
+
     const sendMessage = () => {
         // console.log("message being sent: " + message.trim())
         if (message.trim() !== '') {
@@ -82,7 +96,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
                 placeholder="use the text area to chat up a storm"
                 style={{ minHeight: '20px', maxHeight: '20px', maxWidth:'90%', minWidth:'90%' }}
             />
-
+            {showEmojiPicker && <EmojiPicker onEmojiClick={onEmojiClick} />}
+            <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😊</button>
             <button className="send-button" onClick={sendMessage}>Send</button>
         </div>
     );
