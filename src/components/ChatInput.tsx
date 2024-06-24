@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
-import  EmojiPicker, { IEmojiData, EmojiClickData } from 'emoji-picker-react'; 
+import EmojiPicker from 'emoji-picker-react';
+import EmojiClickData from 'emoji-picker-react';
+import IEmojiData  from 'emoji-picker-react';
 import '../styles/chatInput.css';
 
 interface ChatInputProps {
     onSendMessage: (message: string) => void;
 }
 
-interface EmojiObject {
+interface EmojiData {
+
     emoji: string;
+
 }
+
+// interface EmojiData {
+//     [key: string]: any;
+// }
+
+//type EmojiData = object;
+
+// type EmojiClickData = (
+//     emojiData: typeof IEmojiData,
+//     emoji: string,
+//     event: React.MouseEvent<Element, MouseEvent>
+// ) => void;
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     const [message, setMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+    // debugger
+    // console.log(IEmojiData)
 
     ///// for single line input ///////////////////////////////////////////////////////////////
     // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,45 +63,33 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
-    ///// for mulit line input textArea ///////////////////////////////////////////////////////////////
+    ///// for multi line input textArea ///////////////////////////////////////////////////////////////
         const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
             setMessage(event.target.value);
         };
     
         const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault(); // Prevents adding a new line
+                event.preventDefault(); 
                 if (message.trim() !== '') {
                     onSendMessage(message.trim());
-                    setMessage(''); // Clear textarea after sending
+                    setMessage(''); 
                 }
             }
         };
-
-        // <textarea
-        //     value={message}
-        //     onChange={handleInputChange}
-        //     onKeyDown={handleKeyDown}
-        //     placeholder="use the text area to chat up a storm"
-        // />
     ///////////////////////////////////////////////////////////////////////////////
 
-    // const onEmojiClick = (event: React.MouseEvent, emojiObject: EmojiObject) => {
-    //     setMessage(prevMessage => prevMessage + emojiObject.emoji);
-    //     setShowEmojiPicker(false);
-    // };
-
-    const onEmojiClick = (emojiData: EmojiClickData, event: React.MouseEvent<Element, MouseEvent>) => {
-        setMessage(prevMessage => prevMessage + emojiData.emoji);
+    const onEmojiClick = (emojiData: EmojiData) => { // , event: React.MouseEvent<Element, MouseEvent>
+        // debugger;
+        setMessage(prevMessage => prevMessage + emojiData?.emoji); 
         setShowEmojiPicker(false);
     };
 
     const sendMessage = () => {
-        // console.log("message being sent: " + message.trim())
+
         if (message.trim() !== '') {
-            //debugger
             onSendMessage(message.trim());
-            setMessage(''); // Clear input after sending
+            setMessage(''); 
         }
     };
 
@@ -90,17 +97,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     return (
         <div className="chat-input-container">
             <textarea
+                className="chat-input"
                 value={message}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 placeholder="use the text area to chat up a storm"
-                style={{ minHeight: '20px', maxHeight: '20px', maxWidth:'90%', minWidth:'90%' }}
             />
-            {showEmojiPicker && <EmojiPicker onEmojiClick={onEmojiClick} />}
-            <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😊</button>
+            {showEmojiPicker && (
+                <div className="emoji-picker">
+                    <EmojiPicker onEmojiClick={onEmojiClick} />
+                </div>
+            )}
+            <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="emoji-button">
+                😊
+            </button>
             <button className="send-button" onClick={sendMessage}>Send</button>
         </div>
     );
+    
 };
 
 export default ChatInput;
