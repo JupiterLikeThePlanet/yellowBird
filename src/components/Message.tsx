@@ -13,9 +13,7 @@ interface MessageProps {
 const Message: React.FC<MessageProps> = ({ message }) => {
     const { text, senderId, timestamp } = message;
 
-    // Formatting the timestamp for better readability
     const formattedTime = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-
     // Custom class for styling messages by the current user differently
     const messageClass = senderId === "001" ? "my-message" : "other-message";
 

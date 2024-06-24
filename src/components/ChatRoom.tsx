@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
 import Message from './Message'; 
+import ChatInput from './ChatInput';
 
 interface Message {
     id: string;
@@ -34,7 +35,6 @@ const ChatRoom = () => {
         pubnub.addListener({ message: handleMessage });
         pubnub.subscribe({ channels: [channel] });
 
-        // return () => pubnub.unsubscribeAll();
         return () => {
             pubnub.removeListener({ message: handleMessage });
             pubnub.unsubscribeAll();
@@ -58,6 +58,7 @@ const ChatRoom = () => {
     return (
         <div>
             <h1>Chat Room</h1>
+            <ChatInput onSendMessage={sendMessage} />
             <ul>
                 {messages.map((message) => (
                     <li key={message.id}>
@@ -65,7 +66,6 @@ const ChatRoom = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => sendMessage("There's no crying in baseball!")}>Send Message</button>
         </div>
     );
 };

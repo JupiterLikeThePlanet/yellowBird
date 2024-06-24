@@ -9,6 +9,7 @@
     "@types/node": "^16.18.99",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "emoji-picker-react": "^4.10.0",
     "npm": "^10.8.1",
     "pubnub-react": "^3.0.2",
     "react": "^18.3.1",
