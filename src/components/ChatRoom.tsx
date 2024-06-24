@@ -14,9 +14,21 @@ interface Message {
 const ChatRoom = () => {
     const pubnub = usePubNub();
     const [messages, setMessages] = useState<Message[]>([]);
-    const [channel] = useState<string>('yellowBirdChat');
+    // const [channel] = useState<string>('yellowBirdChat');
+    const [channel, setChannel] = useState<string>('');
+    const [roomCode, setRoomCode] = useState<string>('');
 
     useEffect(() => {
+        const storedRoomCode = localStorage.getItem('chatRoomCode');
+        if (storedRoomCode) {
+            setChannel(storedRoomCode);
+            setRoomCode(storedRoomCode);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!channel) return;
+
         const handleMessage = (event: PubNub.MessageEvent) => {
             const newMessage: Message = {
                 id: event.message.id,
@@ -41,31 +53,59 @@ const ChatRoom = () => {
         };
     }, [pubnub, channel]);
 
+    const sendMessage = (message: string): void => {
+        if (channel) {
+            pubnub.publish({
+                channel: channel,
+                message: { id: Date.now().toString(), text: message, senderId: 'senderID', timestamp: new Date() }
+            }).then((response: PubNub.PublishResponse) => {
+                console.log("Message Published", response);
+            }).catch((error: Error) => {
+                console.error("Failed to publish message", error);
+            });
+        }
+    };
 
+    const handleJoinRoom = () => {
+        if (roomCode.trim()) {
+            setChannel(roomCode.trim());
+        }
+    };
 
-    function sendMessage(message: string): void {
-        pubnub.publish({
-            channel: 'yellowBirdChat',
-            message: { id: Date.now().toString(), text: message, senderId: 'senderID', timestamp: new Date() }
-        }).then((response: PubNub.PublishResponse) => {
-            console.log("Message Published", response);
-        }).catch((error: Error) => {
-            console.error("Failed to publish message", error);
-        });
-    }
-
+    const handleCreateRoom = () => {
+        const newRoomCode = `room-${Date.now()}`;
+        setChannel(newRoomCode);
+        setRoomCode(newRoomCode);  // will displays a code to the user to share with another user, needs validation
+    };
 
     return (
         <div>
-            <h1>Chat Room</h1>
-            <ChatInput onSendMessage={sendMessage} />
-            <ul>
-                {messages.map((message) => (
-                    <li key={message.id}>
-                        <Message message={message} />
-                    </li>
-                ))}
-            </ul>
+            <h1>Secret Chat Room, shhh</h1>
+            {!channel && (
+                <div>
+                    <input
+                        type="text"
+                        placeholder="room code"
+                        value={roomCode}
+                        onChange={(e) => setRoomCode(e.target.value)}
+                    />
+                    <button onClick={handleJoinRoom}>Join Friends!</button>
+                    <button onClick={handleCreateRoom}>Create Room</button>
+                </div>
+            )}
+            {channel && (
+                <>
+                    <p>Room Code: {channel}</p>
+                    <ChatInput onSendMessage={sendMessage} />
+                    <ul>
+                        {messages.map((message) => (
+                            <li key={message.id}>
+                                <Message message={message} />
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
         </div>
     );
 };
