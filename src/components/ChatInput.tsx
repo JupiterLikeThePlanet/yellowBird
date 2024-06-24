@@ -9,29 +9,14 @@ interface ChatInputProps {
 }
 
 interface EmojiData {
-
     emoji: string;
-
 }
 
-// interface EmojiData {
-//     [key: string]: any;
-// }
-
-//type EmojiData = object;
-
-// type EmojiClickData = (
-//     emojiData: typeof IEmojiData,
-//     emoji: string,
-//     event: React.MouseEvent<Element, MouseEvent>
-// ) => void;
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     const [message, setMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-    // debugger
-    // console.log(IEmojiData)
 
     ///// for single line input ///////////////////////////////////////////////////////////////
     // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,19 +65,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     ///////////////////////////////////////////////////////////////////////////////
 
     const onEmojiClick = (emojiData: EmojiData) => { // , event: React.MouseEvent<Element, MouseEvent>
-        // debugger;
         setMessage(prevMessage => prevMessage + emojiData?.emoji); 
         setShowEmojiPicker(false);
     };
 
     const sendMessage = () => {
-
         if (message.trim() !== '') {
             onSendMessage(message.trim());
             setMessage(''); 
         }
     };
-
 
     return (
         <div className="chat-input-container">
