@@ -66,16 +66,40 @@ const ChatRoom = () => {
         }
     };
 
-    const handleJoinRoom = () => {
+    const handleJoinRoom = async () => {
         if (roomCode.trim()) {
-            setChannel(roomCode.trim());
+            const isValid = await checkRoomValidity(roomCode.trim());
+            if (isValid) {
+                setChannel(roomCode.trim());
+                localStorage.setItem('chatRoomCode', roomCode.trim());  // Save the room code
+            } else {
+                alert('Invalid room code');
+            }
         }
     };
 
     const handleCreateRoom = () => {
         const newRoomCode = `room-${Date.now()}`;
         setChannel(newRoomCode);
-        setRoomCode(newRoomCode);  // will displays a code to the user to share with another user, needs validation
+        setRoomCode(newRoomCode);
+        localStorage.setItem('chatRoomCode', newRoomCode);  // Save the new room code
+    };
+
+    const checkRoomValidity = async (code: string): Promise<boolean> => {
+        let isValid = false;
+        try {
+            const response = await pubnub.fetchMessages({
+                channels: [code],
+                count: 1  // We only need to check if there's at least one message
+            });
+    
+            if (response && response.channels && response.channels[code] && response.channels[code].length > 0) {
+                isValid = true;
+            }
+        } catch (error) {
+            console.error('Failed to check room validity:', error);
+        }
+        return isValid;
     };
 
     return (
