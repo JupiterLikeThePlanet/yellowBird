@@ -35,7 +35,6 @@ const ChatRoom = () => {
         pubnub.addListener({ message: handleMessage });
         pubnub.subscribe({ channels: [channel] });
 
-        // return () => pubnub.unsubscribeAll();
         return () => {
             pubnub.removeListener({ message: handleMessage });
             pubnub.unsubscribeAll();
