@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
-import EmojiClickData from 'emoji-picker-react';
-import IEmojiData  from 'emoji-picker-react';
 import '../styles/chatInput.css';
 
 interface ChatInputProps {
