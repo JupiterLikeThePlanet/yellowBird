@@ -17,12 +17,21 @@ const ChatRoom = () => {
     // const [channel] = useState<string>('yellowBirdChat');
     const [channel, setChannel] = useState<string>('');
     const [roomCode, setRoomCode] = useState<string>('');
+    const [isCreator, setIsCreator] = useState<boolean>(false);
+
 
     useEffect(() => {
         const storedRoomCode = localStorage.getItem('chatRoomCode');
+        const storedIsCreator = localStorage.getItem('isCreator') === 'true';
+        console.log("in useEffect ///////")
+        console.log("storedRoomCode : " + storedRoomCode)
+        console.log("storedIsCreator : " + storedIsCreator)
+        console.log("////// ////// ///////")
+
         if (storedRoomCode) {
             setChannel(storedRoomCode);
             setRoomCode(storedRoomCode);
+            setIsCreator(storedIsCreator);
         }
     }, []);
 
@@ -71,7 +80,14 @@ const ChatRoom = () => {
             const isValid = await checkRoomValidity(roomCode.trim());
             if (isValid) {
                 setChannel(roomCode.trim());
-                localStorage.setItem('chatRoomCode', roomCode.trim());  // Save the room code
+                // using localStorage to set creator
+                localStorage.setItem('chatRoomCode', roomCode.trim());
+                localStorage.setItem('isCreator', 'false');
+                //debugger
+                console.log("////////////in handlejoinroom///////////////////")
+                console.log("isCreator: " + localStorage.isCreator )
+                console.log("chatRoomCode: " + localStorage.chatRoomCode)
+                console.log("/////////////////////////////////////")
             } else {
                 alert('Invalid room code');
             }
@@ -79,10 +95,11 @@ const ChatRoom = () => {
     };
 
     const handleCreateRoom = () => {
-        const newRoomCode = `room-${Date.now()}`;
+        const newRoomCode = `BirdNest-${Date.now()}`;
         setChannel(newRoomCode);
         setRoomCode(newRoomCode);
-        localStorage.setItem('chatRoomCode', newRoomCode);  // Save the new room code
+        // Save the new room code
+        localStorage.setItem('chatRoomCode', newRoomCode);
     };
 
     const checkRoomValidity = async (code: string): Promise<boolean> => {
@@ -90,7 +107,7 @@ const ChatRoom = () => {
         try {
             const response = await pubnub.fetchMessages({
                 channels: [code],
-                count: 1  // We only need to check if there's at least one message
+                count: 1  
             });
     
             if (response && response.channels && response.channels[code] && response.channels[code].length > 0) {
@@ -102,9 +119,18 @@ const ChatRoom = () => {
         return isValid;
     };
 
+    const handleEndSession = () => {
+        pubnub.unsubscribe({ channels: [channel] });
+        setChannel('');
+        setRoomCode('');
+        setMessages([]);
+        localStorage.removeItem('chatRoomCode');  
+        alert('Chat session ended.');
+    };
+
     return (
         <div>
-            <h1>Secret Chat Room, shhh</h1>
+            <h1>Yellow Bird Chatter</h1>
             {!channel && (
                 <div>
                     <input
@@ -120,6 +146,7 @@ const ChatRoom = () => {
             {channel && (
                 <>
                     <p>Room Code: {channel}</p>
+                    <button onClick={handleEndSession}>End Session</button>
                     <ChatInput onSendMessage={sendMessage} />
                     <ul>
                         {messages.map((message) => (
