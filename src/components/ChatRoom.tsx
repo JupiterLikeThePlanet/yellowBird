@@ -21,9 +21,11 @@ const ChatRoom = () => {
 
 
     useEffect(() => {
+        // useEffect for persistence
+        debugger
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
-        console.log("in useEffect ///////")
+        console.log("in useEffect for Persistence ///////")
         console.log("storedRoomCode : " + storedRoomCode)
         console.log("storedIsCreator : " + storedIsCreator)
         console.log("////// ////// ///////")
@@ -100,18 +102,23 @@ const ChatRoom = () => {
         setRoomCode(newRoomCode);
         // Save the new room code
         localStorage.setItem('chatRoomCode', newRoomCode);
+        localStorage.setItem('isCreator', 'true');
     };
 
     const checkRoomValidity = async (code: string): Promise<boolean> => {
         let isValid = false;
         try {
-            const response = await pubnub.fetchMessages({
+            //From documentation: When a client opens the app, it's often required to discover what other users are already subscribed to that channel (for example, to construct a chat room's online friends list). You can obtain a list of client User IDs, including clients' state data, and the total occupancy of the channel using the Here Now API.
+            //https://www.pubnub.com/docs/general/presence/overview
+            const response = await pubnub.hereNow({
                 channels: [code],
-                count: 1  
+                // includeUUIDs: false, 
+                includeState: false
             });
     
-            if (response && response.channels && response.channels[code] && response.channels[code].length > 0) {
-                isValid = true;
+            // checking channel exists and users present
+            if (response && response.totalOccupancy > 0) {
+                isValid = true; 
             }
         } catch (error) {
             console.error('Failed to check room validity:', error);

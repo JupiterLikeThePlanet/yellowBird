@@ -1,0 +1,143 @@
+/* .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+} */
+
+.header {
+    background-color: #34ebae;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+
+/* .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+} */
+
+.title {
+    font-size: 1.5rem; /* H1 size */
+    color: yellow;
+    text-shadow: 2px 2px 0px #000; /* Black outline effect */
+}
+
+.room-code {
+    margin: 0 20px;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.end-session-button {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.end-session-button:hover {
+    background-color: #c82333;
+}
+
+.chat-container {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-top: 8px solid #333;
+}
+
+.join-create-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.join-create-input {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+}
+
+.join-create-button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.join-create-button:hover {
+    background-color: #0056b3;
+}
+
+.message-container {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    margin: auto;
+    overflow-y: auto; 
+    border: 1px solid #ccc; 
+    background-color: #fff; 
+    padding: 10px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+/* .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.header .title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.header .room-code {
+    margin: 0 20px;
+    font-size: 1.2em;
+}
+
+.header .end-session-button {
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header .end-session-button:hover {
+    background-color: #c33c25;
+} */
