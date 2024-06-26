@@ -39,6 +39,19 @@
     background-color: #c82333;
 }
 
+.leave-session-button {
+    padding: 8px 16px;
+    background-color: #6c757d; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.leave-session-button:hover {
+    background-color: #5a6268;
+}
+
 
 .chat-container {
     background-color: #f4f4f4;

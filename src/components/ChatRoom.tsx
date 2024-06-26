@@ -3,6 +3,7 @@ import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
 import Message from './Message'; 
 import ChatInput from './ChatInput';
+import Header from './Header';
 import '../styles/message.css';
 import '../styles/chatRoom.css';
 
@@ -12,6 +13,8 @@ interface Message {
     senderId: string;
     timestamp: Date;
 }
+
+// want a functionality to add a screen name and cant join or create until one is created
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
@@ -24,7 +27,7 @@ const ChatRoom = () => {
 
     useEffect(() => {
         // useEffect for persistence
-        debugger
+        // debugger
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
         console.log("in useEffect for Persistence ///////")
@@ -114,7 +117,7 @@ const ChatRoom = () => {
             //https://www.pubnub.com/docs/general/presence/overview
             const response = await pubnub.hereNow({
                 channels: [code],
-                // includeUUIDs: false, 
+                // includeUUIDs: false, /// keeping this for use later, look up
                 includeState: false
             });
     
@@ -137,11 +140,23 @@ const ChatRoom = () => {
         alert('Chat session ended.');
     };
 
+    const handleLeaveSession = () => {
+        pubnub.unsubscribe({
+            channels: [channel]
+        });
+        setChannel('');
+        setRoomCode('');
+        setMessages([]);
+        // this is used to stop auto-rejoin / persistence on refresh
+        localStorage.removeItem('chatRoomCode');  
+        alert('You have left the chat session.');
+    };
+
     return (
         <div>
-            <h1>Yellow Bird Chatter</h1>
             {!channel && (
             <>
+                <h1>Yellow Bird Chat</h1>
                 <div className="join-section">
                     <input
                         type="text"
@@ -162,9 +177,16 @@ const ChatRoom = () => {
             )}
             {channel && (
                 <>
-                    <p>Room Code: {channel}</p>
-                    <button onClick={handleEndSession}>End Session</button>
-                    <ChatInput onSendMessage={sendMessage} />
+                    <div className="header">
+                        <div className="title">Yellow Bird Chatter</div>
+                        <div className="room-code">Room Code: {channel}</div>
+                        {isCreator ? (
+                            <button className="end-session-button" onClick={handleEndSession}>End Session</button>
+                        ) : (
+                            <button className="leave-session-button" onClick={handleLeaveSession}>Leave Session</button>
+                        )}
+                    </div>
+                
                     <ul>
                         {messages.map((message) => (
                             <li key={message.id}>
@@ -172,6 +194,8 @@ const ChatRoom = () => {
                             </li>
                         ))}
                     </ul>
+
+                    <ChatInput onSendMessage={sendMessage} />
                 </>
             )}
         </div>
