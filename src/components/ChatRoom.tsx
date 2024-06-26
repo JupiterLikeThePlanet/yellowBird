@@ -28,6 +28,7 @@ const ChatRoom = () => {
 
     useEffect(() => {
         // useEffect for persistence
+         
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
         console.log("in useEffect for Persistence ///////")
@@ -43,6 +44,7 @@ const ChatRoom = () => {
     }, []);
 
     useEffect(() => {
+         
         if (!channel) return;
 
         const handleMessage = (event: PubNub.MessageEvent) => {
@@ -66,6 +68,8 @@ const ChatRoom = () => {
         return () => {
             pubnub.removeListener({ message: handleMessage });
             pubnub.unsubscribeAll();
+            localStorage.removeItem('chatRoomCode');  
+            localStorage.removeItem('isCreator');
         };
     }, [pubnub, channel]);
 
@@ -90,7 +94,7 @@ const ChatRoom = () => {
                 // using localStorage to set creator
                 localStorage.setItem('chatRoomCode', roomCode.trim());
                 localStorage.setItem('isCreator', 'false');
-                //debugger
+                // 
                 console.log("////////////in handlejoinroom///////////////////")
                 console.log("isCreator: " + localStorage.isCreator )
                 console.log("chatRoomCode: " + localStorage.chatRoomCode)
@@ -106,6 +110,7 @@ const ChatRoom = () => {
         setChannel(newRoomCode);
         setRoomCode(newRoomCode);
         // Save the new room code
+         
         localStorage.setItem('chatRoomCode', newRoomCode);
         localStorage.setItem('isCreator', 'true');
     };
@@ -136,8 +141,10 @@ const ChatRoom = () => {
         setChannel('');
         setRoomCode('');
         setMessages([]);
+         
         localStorage.removeItem('chatRoomCode');  
         localStorage.removeItem('isCreator');
+         
         alert('Chat session ended.');
     };
 
@@ -149,8 +156,10 @@ const ChatRoom = () => {
         setRoomCode('');
         setMessages([]);
         // this is used to stop auto-rejoin / persistence on refresh
+         
         localStorage.removeItem('chatRoomCode'); 
         localStorage.removeItem('isCreator');
+         
         alert('You have left the chat session.');
     };
 
@@ -163,7 +172,7 @@ const ChatRoom = () => {
                     <input
                         type="text"
                         className="join-input"
-                        placeholder="Room code"
+                        placeholder="room code"
                         value={roomCode}
                         onChange={(e) => setRoomCode(e.target.value)}
                     />
