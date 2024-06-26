@@ -1,4 +1,4 @@
-.header {
+/* .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,4 +28,56 @@
 
 .end-session-button:hover {
     background-color: #c82333;
+} */
+
+/* --------------------- */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.title {
+    font-size: 1.5rem;
+    color: yellow;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.room-code {
+    margin: 0 20px;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.end-session-button, .leave-session-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
+.end-session-button {
+    background-color: #dc3545;
+}
+
+.end-session-button:hover {
+    background-color: #c82333;
+}
+
+.leave-session-button {
+    background-color: #6c757d;
+}
+
+.leave-session-button:hover {
+    background-color: #5a6268;
 }

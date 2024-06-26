@@ -15,11 +15,12 @@ interface Message {
 }
 
 // want a functionality to add a screen name and cant join or create until one is created
+// clean up header styles between header component and chatRoom component styles 
+// clear up the leave session and end session bug 
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
     const [messages, setMessages] = useState<Message[]>([]);
-    // const [channel] = useState<string>('yellowBirdChat');
     const [channel, setChannel] = useState<string>('');
     const [roomCode, setRoomCode] = useState<string>('');
     const [isCreator, setIsCreator] = useState<boolean>(false);
@@ -27,7 +28,6 @@ const ChatRoom = () => {
 
     useEffect(() => {
         // useEffect for persistence
-        // debugger
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
         console.log("in useEffect for Persistence ///////")
@@ -137,6 +137,7 @@ const ChatRoom = () => {
         setRoomCode('');
         setMessages([]);
         localStorage.removeItem('chatRoomCode');  
+        localStorage.removeItem('isCreator');
         alert('Chat session ended.');
     };
 
@@ -148,7 +149,8 @@ const ChatRoom = () => {
         setRoomCode('');
         setMessages([]);
         // this is used to stop auto-rejoin / persistence on refresh
-        localStorage.removeItem('chatRoomCode');  
+        localStorage.removeItem('chatRoomCode'); 
+        localStorage.removeItem('isCreator');
         alert('You have left the chat session.');
     };
 
@@ -177,16 +179,13 @@ const ChatRoom = () => {
             )}
             {channel && (
                 <>
-                    <div className="header">
-                        <div className="title">Yellow Bird Chatter</div>
-                        <div className="room-code">Room Code: {channel}</div>
-                        {isCreator ? (
-                            <button className="end-session-button" onClick={handleEndSession}>End Session</button>
-                        ) : (
-                            <button className="leave-session-button" onClick={handleLeaveSession}>Leave Session</button>
-                        )}
-                    </div>
-                
+                    <Header 
+                        channel={channel} 
+                        isCreator={isCreator} 
+                        onEndSession={handleEndSession} 
+                        onLeaveSession={handleLeaveSession}
+                    />
+
                     <ul>
                         {messages.map((message) => (
                             <li key={message.id}>
@@ -203,3 +202,14 @@ const ChatRoom = () => {
 };
 
 export default ChatRoom;
+
+
+                    // <div className="header">
+                    //     <div className="title">Yellow Bird Chatter</div>
+                    //     <div className="room-code">Room Code: {channel}</div>
+                    //     {isCreator ? (
+                    //         <button className="end-session-button" onClick={handleEndSession}>End Session</button>
+                    //     ) : (
+                    //         <button className="leave-session-button" onClick={handleLeaveSession}>Leave Session</button>
+                    //     )}
+                    // </div>
