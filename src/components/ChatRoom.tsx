@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
 import Message from './Message'; 
+import MessageContainer from './MessageContainer';
 import ChatInput from './ChatInput';
 import Header from './Header';
 import '../styles/message.css';
@@ -17,6 +18,7 @@ interface Message {
 // want a functionality to add a screen name and cant join or create until one is created
 // clean up header styles between header component and chatRoom component styles 
 // clear up the leave session and end session bug 
+// 
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
@@ -24,6 +26,8 @@ const ChatRoom = () => {
     const [channel, setChannel] = useState<string>('');
     const [roomCode, setRoomCode] = useState<string>('');
     const [isCreator, setIsCreator] = useState<boolean>(false);
+
+    const userId = pubnub.getUUID();
 
 
     useEffect(() => {
@@ -166,7 +170,7 @@ const ChatRoom = () => {
     return (
         <div>
             {!channel && (
-            <>
+            <div className="join-create-screen">
                 <h1>Yellow Bird Chat</h1>
                 <div className="join-section">
                     <input
@@ -183,7 +187,7 @@ const ChatRoom = () => {
                     <button className="create-button" onClick={handleCreateRoom}>Create Room</button>
                 </div>
 
-            </>
+            </div>
 
             )}
             {channel && (
@@ -195,13 +199,7 @@ const ChatRoom = () => {
                         onLeaveSession={handleLeaveSession}
                     />
 
-                    <ul>
-                        {messages.map((message) => (
-                            <li key={message.id}>
-                                <Message message={message} />
-                            </li>
-                        ))}
-                    </ul>
+                    <MessageContainer messages={messages} currentUserId={userId} />
 
                     <ChatInput onSendMessage={sendMessage} />
                 </>
@@ -222,3 +220,11 @@ export default ChatRoom;
                     //         <button className="leave-session-button" onClick={handleLeaveSession}>Leave Session</button>
                     //     )}
                     // </div>
+
+                    // <ul>
+                    //     {messages.map((message) => (
+                    //         <li key={message.id}>
+                    //             <Message message={message} />
+                    //         </li>
+                    //     ))}
+                    // </ul>

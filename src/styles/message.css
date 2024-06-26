@@ -2,18 +2,18 @@
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 10px;
-    background-color: #f4f4f8;
+    background-color: #00fffb;
     width: fit-content;
     max-width: 80%;
 }
 
 .my-message {
-    background-color: #dcf8c6;
+    background-color: #eef8a4;
     align-self: flex-end;
 }
 
 .other-message {
-    background-color: #ffffff;
+    background-color: #b6f9b1;
     align-self: flex-start;
 }
 
