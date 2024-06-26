@@ -1,0 +1,117 @@
+/* ------ ChatRoom View ------*/
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.title {
+    font-size: 1.5rem; /* H1 size */
+    color: yellow;
+    text-shadow: 2px 2px 0px #000; /* Black outline effect */
+}
+
+.room-code {
+    margin: 0 20px;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.end-session-button {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.end-session-button:hover {
+    background-color: #c82333;
+}
+
+.leave-session-button {
+    padding: 8px 16px;
+    background-color: #6c757d; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.leave-session-button:hover {
+    background-color: #5a6268;
+}
+
+
+.chat-container {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-top: 8px solid #333;
+}
+
+.message-container {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    margin: auto;
+    overflow-y: auto; 
+    border: 1px solid #ccc; 
+    background-color: #fff; 
+    padding: 10px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* ------ --------- ------*/
+
+/* ------ Join View ------*/
+.join-section {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    padding: 10px;
+}
+
+.join-input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.join-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.join-button:hover {
+    background-color: #218838;
+}
+
+.create-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-button:hover {
+    background-color: #0056b3;
+}
+/* ----------------------------- */
