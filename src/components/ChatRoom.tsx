@@ -3,6 +3,8 @@ import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
 import Message from './Message'; 
 import ChatInput from './ChatInput';
+import '../styles/message.css';
+import '../styles/chatRoom.css';
 
 interface Message {
     id: string;
@@ -139,16 +141,24 @@ const ChatRoom = () => {
         <div>
             <h1>Yellow Bird Chatter</h1>
             {!channel && (
-                <div>
+            <>
+                <div className="join-section">
                     <input
                         type="text"
-                        placeholder="room code"
+                        className="join-input"
+                        placeholder="Room code"
                         value={roomCode}
                         onChange={(e) => setRoomCode(e.target.value)}
                     />
-                    <button onClick={handleJoinRoom}>Join Friends!</button>
-                    <button onClick={handleCreateRoom}>Create Room</button>
+                    <button className="join-button" onClick={handleJoinRoom}>Join Friends!</button>
                 </div>
+                <div>
+                    <hr></hr>
+                    <button className="create-button" onClick={handleCreateRoom}>Create Room</button>
+                </div>
+
+            </>
+
             )}
             {channel && (
                 <>
