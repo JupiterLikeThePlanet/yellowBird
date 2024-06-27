@@ -18,7 +18,7 @@ interface MessageObj {
 // clean up header styles between header component and chatRoom component styles 
 // clear up the leave session and end session bug 
 // give submit name stuff their own classes
-// BUG: on refresh, Persisted messages are all classes as OTHER MESSAGES instead of some being my messages
+// Maybe we don't need an end session, just leave session and if a room has 0 people in it, the channel is terminated
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
@@ -28,16 +28,23 @@ const ChatRoom = () => {
     const [isCreator, setIsCreator] = useState<boolean>(false);
     const [screenName, setScreenName] = useState<string>('');
     const [isScreenNameEntered, setIsScreenNameEntered] = useState<boolean>(false);
+    const [currentUserId, setCurrentUserId] = useState<string>(() => localStorage.getItem('currentUserId') || '');
 
-    const userId = pubnub.getUUID();
+    // const userId = pubnub.getUUID();
+    //const currentUserId = pubnub.getUUID();
 
-    // useEffect(() => {
-    //     const storedScreenName = localStorage.getItem('screenName');
-    //     if (storedScreenName) {
-    //         setScreenName(storedScreenName);
-    //         setIsScreenNameEntered(true);
-    //     }
-    // }, []);
+
+    useEffect(() => {
+        if (!currentUserId) {
+            const fetchUserId = async () => {
+                const userId = await pubnub.getUUID(); 
+                localStorage.setItem('currentUserId', userId);
+                setCurrentUserId(userId);
+            };
+
+            fetchUserId();
+        }
+    }, [pubnub, currentUserId]);
 
     useEffect(() => {
         // useEffect for persistence
@@ -45,6 +52,8 @@ const ChatRoom = () => {
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
         const storedScreenName = localStorage.getItem('screenName');
         
+        localStorage.setItem('isCreator', 'false');
+
         if (storedScreenName) {
             setScreenName(storedScreenName);
             setIsScreenNameEntered(true);
@@ -60,6 +69,9 @@ const ChatRoom = () => {
     useEffect(() => {
          
         if (!channel) return;
+
+        // setCurrentUserId(pubnub.getUUID());
+        
 
         pubnub.subscribe({ channels: [channel] });
         fetchHistory();
@@ -132,7 +144,8 @@ const ChatRoom = () => {
             const messagePayload = {
                 id: Date.now().toString(),
                 text: message,
-                senderId: userId,
+                // senderId: userId,
+                senderId: currentUserId,
                 screenName: screenName, 
                 timestamp: new Date()
             };
@@ -289,7 +302,7 @@ const ChatRoom = () => {
                         onLeaveSession={handleLeaveSession}
                     />
 
-                    <MessageContainer messages={messages} currentUserId={userId}/>
+                    <MessageContainer messages={messages} currentUserId={currentUserId}/>
 
                     <ChatInput onSendMessage={sendMessage} />
                 </>
