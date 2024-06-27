@@ -21,13 +21,6 @@ const Message: React.FC<MessageProps> = ({ message, currentUserId  }) => {
     const isCurrentUser = senderId === currentUserId ;
     // Custom class for styling messages by the current user differently
     const messageClass = isCurrentUser ? 'my-message' : 'other-message';
-    console.log("=======Message Component=========")
-    console.log("senderId: " + senderId)
-    console.log("currentUserId: " + currentUserId)
-    console.log("messageClass: " + messageClass)
-    console.log("=================================")
-
-    
 
     return (
         <div className={`message ${messageClass}`}>
