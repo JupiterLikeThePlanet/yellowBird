@@ -13,13 +13,9 @@ interface MessageProps {
 }
 
 const Message: React.FC<MessageProps> = ({ message, userId }) => {
-    // const { text, senderId, timestamp } = message;
-    // const formattedTime = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-
     const { text, senderId, timestamp, screenName } = message;
     const formattedTime = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
     const isCurrentUser = senderId === userId;;
-    // debugger
     // Custom class for styling messages by the current user differently
     const messageClass = isCurrentUser ? 'my-message' : 'other-message';
 

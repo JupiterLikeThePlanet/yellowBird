@@ -16,7 +16,6 @@ interface MessageObj {
     screenName: string;
 }
 
-// want a functionality to add a screen name and cant join or create until one is created
 // clean up header styles between header component and chatRoom component styles 
 // clear up the leave session and end session bug 
 // give submit name stuff their own classes
@@ -44,10 +43,6 @@ const ChatRoom = () => {
         // useEffect for persistence
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
-        console.log("in useEffect for Persistence ///////")
-        console.log("storedRoomCode : " + storedRoomCode)
-        console.log("storedIsCreator : " + storedIsCreator)
-        console.log("////// ////// ///////")
 
         if (storedRoomCode) {
             setChannel(storedRoomCode);
@@ -92,15 +87,6 @@ const ChatRoom = () => {
         setScreenName(event.target.value);
     };
 
-    // const handleSubmitName = () => {
-    //     if(screenName.trim().length > 3 ){
-    //         setIsScreenNameEntered(true);
-    //         localStorage.setItem('screenName', screenName);
-    //     }else{
-    //         alert("Screen name must contain at least 3 characters and no spaces")
-    //     }
-    // };
-
     const handleSubmitName = () => {
         if (screenName.trim().length > 3) {
             setIsScreenNameEntered(true);
@@ -115,19 +101,6 @@ const ChatRoom = () => {
         setIsScreenNameEntered(false);
         localStorage.removeItem('screenName'); 
     };
-
-    // const sendMessage = (message: string): void => {
-    //     if (channel) {
-    //         pubnub.publish({
-    //             channel: channel,
-    //             message: { id: Date.now().toString(), text: message, senderId: userId, timestamp: new Date() }
-    //         }).then((response: PubNub.PublishResponse) => {
-    //             console.log("Message Published", response);
-    //         }).catch((error: Error) => {
-    //             console.error("Failed to publish message", error);
-    //         });
-    //     }
-    // };
 
     const sendMessage = (message: string): void => {
         if (channel && isScreenNameEntered) {
@@ -162,11 +135,6 @@ const ChatRoom = () => {
                 // using localStorage to set creator
                 localStorage.setItem('chatRoomCode', roomCode.trim());
                 localStorage.setItem('isCreator', 'false');
-                // 
-                console.log("////////////in handlejoinroom///////////////////")
-                console.log("isCreator: " + localStorage.isCreator )
-                console.log("chatRoomCode: " + localStorage.chatRoomCode)
-                console.log("/////////////////////////////////////")
             } else {
                 alert('Invalid room code');
             }
@@ -178,7 +146,6 @@ const ChatRoom = () => {
         if (isScreenNameEntered) {
             setChannel(newRoomCode);
             setRoomCode(newRoomCode);
-            // Save the new room code
             localStorage.setItem('chatRoomCode', newRoomCode);
             localStorage.setItem('isCreator', 'true');
         }
