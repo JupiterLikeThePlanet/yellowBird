@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PubNub from 'pubnub';
 import { usePubNub } from 'pubnub-react';
-import Message from './Message'; 
 import MessageContainer from './MessageContainer';
 import ChatInput from './ChatInput';
 import Header from './Header';
