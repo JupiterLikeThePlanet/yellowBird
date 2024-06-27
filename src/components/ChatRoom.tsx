@@ -8,11 +8,12 @@ import Header from './Header';
 import '../styles/message.css';
 import '../styles/chatRoom.css';
 
-interface Message {
+interface MessageObj {
     id: string;
     text: string;
     senderId: string;
     timestamp: Date;
+    screenName: string;
 }
 
 // want a functionality to add a screen name and cant join or create until one is created
@@ -22,7 +23,7 @@ interface Message {
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<MessageObj[]>([]);
     const [channel, setChannel] = useState<string>('');
     const [roomCode, setRoomCode] = useState<string>('');
     const [isCreator, setIsCreator] = useState<boolean>(false);
@@ -30,6 +31,14 @@ const ChatRoom = () => {
     const [isScreenNameEntered, setIsScreenNameEntered] = useState<boolean>(false);
 
     const userId = pubnub.getUUID();
+
+    useEffect(() => {
+        const storedScreenName = localStorage.getItem('screenName');
+        if (storedScreenName) {
+            setScreenName(storedScreenName);
+            setIsScreenNameEntered(true);
+        }
+    }, []);
 
     useEffect(() => {
         // useEffect for persistence
@@ -52,11 +61,12 @@ const ChatRoom = () => {
         if (!channel) return;
 
         const handleMessage = (event: PubNub.MessageEvent) => {
-            const newMessage: Message = {
+            const newMessage: MessageObj = {
                 id: event.message.id,
                 text: event.message.text,
                 senderId: event.message.senderId,
-                timestamp: new Date(Number(event.timetoken) / 10000)
+                timestamp: new Date(Number(event.timetoken) / 10000),
+                screenName: event.message.screenName
             };
             console.log("Received message:", event.message);
             setMessages(prevMessages => {
@@ -82,30 +92,66 @@ const ChatRoom = () => {
         setScreenName(event.target.value);
     };
 
+    // const handleSubmitName = () => {
+    //     if(screenName.trim().length > 3 ){
+    //         setIsScreenNameEntered(true);
+    //         localStorage.setItem('screenName', screenName);
+    //     }else{
+    //         alert("Screen name must contain at least 3 characters and no spaces")
+    //     }
+    // };
+
     const handleSubmitName = () => {
-        if(screenName.trim().length > 3 ){
+        if (screenName.trim().length > 3) {
             setIsScreenNameEntered(true);
             localStorage.setItem('screenName', screenName);
-        }else{
-            alert("Screen name must contain at least 3 characters and no spaces")
+        } else {
+            alert("Screen name must contain at least 3 characters and no spaces");
         }
     };
+    
 
     const handleChangeName = () => {
         setIsScreenNameEntered(false);
+        localStorage.removeItem('screenName'); 
     };
 
+    // const sendMessage = (message: string): void => {
+    //     if (channel) {
+    //         pubnub.publish({
+    //             channel: channel,
+    //             message: { id: Date.now().toString(), text: message, senderId: userId, timestamp: new Date() }
+    //         }).then((response: PubNub.PublishResponse) => {
+    //             console.log("Message Published", response);
+    //         }).catch((error: Error) => {
+    //             console.error("Failed to publish message", error);
+    //         });
+    //     }
+    // };
+
     const sendMessage = (message: string): void => {
-        if (channel) {
-            pubnub.publish({
-                channel: channel,
-                message: { id: Date.now().toString(), text: message, senderId: userId, timestamp: new Date() }
-            }).then((response: PubNub.PublishResponse) => {
-                console.log("Message Published", response);
-            }).catch((error: Error) => {
-                console.error("Failed to publish message", error);
-            });
+        if (channel && isScreenNameEntered) {
+            const messagePayload = {
+                id: Date.now().toString(),
+                text: message,
+                senderId: userId,
+                screenName: screenName, 
+                timestamp: new Date()
+            };
+            pubnub.publish({ channel, message: messagePayload });
         }
+    };
+
+    const subscribeToChannel = () => {
+        pubnub.addListener({
+            message: (messageEvent) => {
+                setMessages(prevMessages => [...prevMessages, {
+                    ...messageEvent.message,
+                    timestamp: new Date(Number(messageEvent.timetoken) / 10000)
+                }]);
+            }
+        });
+        pubnub.subscribe({ channels: [channel] });
     };
 
     const handleJoinRoom = async () => {

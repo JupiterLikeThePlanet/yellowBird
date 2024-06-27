@@ -8,7 +8,8 @@ describe('Message Component', () => {
           id: '20XX',
           text: 'Can you believe in a thing called love',
           senderId: 'EVA UNIT 00',
-          timestamp: new Date('2021-01-01T00:00:00Z')
+          timestamp: new Date('2021-01-01T00:00:00Z'),
+          screenName: 'Rei'
       };
 
       render(<Message message={testMessage} userId="EVA UNIT 00" />);

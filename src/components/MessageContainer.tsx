@@ -6,6 +6,7 @@ interface MessageProps {
     text: string;
     senderId: string;
     timestamp: Date;
+    screenName: string;
 }
 
 interface MessageContainerProps {
