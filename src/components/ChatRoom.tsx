@@ -18,6 +18,7 @@ interface MessageObj {
 // clean up header styles between header component and chatRoom component styles 
 // clear up the leave session and end session bug 
 // give submit name stuff their own classes
+// BUG: on refresh, Persisted messages are all classes as OTHER MESSAGES instead of some being my messages
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
@@ -30,18 +31,24 @@ const ChatRoom = () => {
 
     const userId = pubnub.getUUID();
 
-    useEffect(() => {
-        const storedScreenName = localStorage.getItem('screenName');
-        if (storedScreenName) {
-            setScreenName(storedScreenName);
-            setIsScreenNameEntered(true);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const storedScreenName = localStorage.getItem('screenName');
+    //     if (storedScreenName) {
+    //         setScreenName(storedScreenName);
+    //         setIsScreenNameEntered(true);
+    //     }
+    // }, []);
 
     useEffect(() => {
         // useEffect for persistence
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
+        const storedScreenName = localStorage.getItem('screenName');
+        
+        if (storedScreenName) {
+            setScreenName(storedScreenName);
+            setIsScreenNameEntered(true);
+        }
 
         if (storedRoomCode) {
             setChannel(storedRoomCode);
