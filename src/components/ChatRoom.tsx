@@ -81,7 +81,7 @@ const ChatRoom = () => {
         if (channel) {
             pubnub.publish({
                 channel: channel,
-                message: { id: Date.now().toString(), text: message, senderId: 'senderID', timestamp: new Date() }
+                message: { id: Date.now().toString(), text: message, senderId: userId, timestamp: new Date() }
             }).then((response: PubNub.PublishResponse) => {
                 console.log("Message Published", response);
             }).catch((error: Error) => {
@@ -183,7 +183,7 @@ const ChatRoom = () => {
                     <button className="join-button" onClick={handleJoinRoom}>Join Friends!</button>
                 </div>
                 <div>
-                    <hr></hr>
+                    <hr className="custom-hr"></hr>
                     <button className="create-button" onClick={handleCreateRoom}>Create Room</button>
                 </div>
 
