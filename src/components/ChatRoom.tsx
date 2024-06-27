@@ -30,19 +30,11 @@ const ChatRoom = () => {
     const [isScreenNameEntered, setIsScreenNameEntered] = useState<boolean>(false);
     const [currentUserId, setCurrentUserId] = useState<string>(() => localStorage.getItem('currentUserId') || '');
 
-    // const userId = pubnub.getUUID();
-    //const currentUserId = pubnub.getUUID();
-
-
     useEffect(() => {
         if (!currentUserId) {
-            const fetchUserId = async () => {
-                const userId = await pubnub.getUUID(); 
-                localStorage.setItem('currentUserId', userId);
-                setCurrentUserId(userId);
-            };
-
-            fetchUserId();
+            const userId = pubnub.getUUID(); 
+            localStorage.setItem('currentUserId', userId);
+            setCurrentUserId(userId);
         }
     }, [pubnub, currentUserId]);
 
@@ -69,9 +61,6 @@ const ChatRoom = () => {
     useEffect(() => {
          
         if (!channel) return;
-
-        // setCurrentUserId(pubnub.getUUID());
-        
 
         pubnub.subscribe({ channels: [channel] });
         fetchHistory();
