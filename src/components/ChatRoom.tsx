@@ -19,6 +19,7 @@ interface MessageObj {
 // clear up the leave session and end session bug 
 // give submit name stuff their own classes
 // Maybe we don't need an end session, just leave session and if a room has 0 people in it, the channel is terminated
+// message container needs to be responsive at less that 765px to fit and stay below header
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
