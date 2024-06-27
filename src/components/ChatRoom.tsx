@@ -18,7 +18,7 @@ interface Message {
 // want a functionality to add a screen name and cant join or create until one is created
 // clean up header styles between header component and chatRoom component styles 
 // clear up the leave session and end session bug 
-// 
+// give submit name stuff their own classes
 
 const ChatRoom = () => {
     const pubnub = usePubNub();
@@ -26,13 +26,13 @@ const ChatRoom = () => {
     const [channel, setChannel] = useState<string>('');
     const [roomCode, setRoomCode] = useState<string>('');
     const [isCreator, setIsCreator] = useState<boolean>(false);
+    const [screenName, setScreenName] = useState<string>('');
+    const [isScreenNameEntered, setIsScreenNameEntered] = useState<boolean>(false);
 
     const userId = pubnub.getUUID();
 
-
     useEffect(() => {
         // useEffect for persistence
-         
         const storedRoomCode = localStorage.getItem('chatRoomCode');
         const storedIsCreator = localStorage.getItem('isCreator') === 'true';
         console.log("in useEffect for Persistence ///////")
@@ -77,6 +77,24 @@ const ChatRoom = () => {
         };
     }, [pubnub, channel]);
 
+
+    const handleScreenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setScreenName(event.target.value);
+    };
+
+    const handleSubmitName = () => {
+        if(screenName.trim().length > 3 ){
+            setIsScreenNameEntered(true);
+            localStorage.setItem('screenName', screenName);
+        }else{
+            alert("Screen name must contain at least 3 characters and no spaces")
+        }
+    };
+
+    const handleChangeName = () => {
+        setIsScreenNameEntered(false);
+    };
+
     const sendMessage = (message: string): void => {
         if (channel) {
             pubnub.publish({
@@ -91,7 +109,7 @@ const ChatRoom = () => {
     };
 
     const handleJoinRoom = async () => {
-        if (roomCode.trim()) {
+        if (roomCode.trim() && isScreenNameEntered) {
             const isValid = await checkRoomValidity(roomCode.trim());
             if (isValid) {
                 setChannel(roomCode.trim());
@@ -111,12 +129,13 @@ const ChatRoom = () => {
 
     const handleCreateRoom = () => {
         const newRoomCode = `BirdNest-${Date.now()}`;
-        setChannel(newRoomCode);
-        setRoomCode(newRoomCode);
-        // Save the new room code
-         
-        localStorage.setItem('chatRoomCode', newRoomCode);
-        localStorage.setItem('isCreator', 'true');
+        if (isScreenNameEntered) {
+            setChannel(newRoomCode);
+            setRoomCode(newRoomCode);
+            // Save the new room code
+            localStorage.setItem('chatRoomCode', newRoomCode);
+            localStorage.setItem('isCreator', 'true');
+        }
     };
 
     const checkRoomValidity = async (code: string): Promise<boolean> => {
@@ -160,7 +179,6 @@ const ChatRoom = () => {
         setRoomCode('');
         setMessages([]);
         // this is used to stop auto-rejoin / persistence on refresh
-         
         localStorage.removeItem('chatRoomCode'); 
         localStorage.removeItem('isCreator');
          
@@ -171,22 +189,45 @@ const ChatRoom = () => {
         <div>
             {!channel && (
             <div className="join-create-screen">
-                <h1>Yellow Bird Chat</h1>
-                <div className="join-section">
-                    <input
-                        type="text"
-                        className="join-input"
-                        placeholder="room code"
-                        value={roomCode}
-                        onChange={(e) => setRoomCode(e.target.value)}
-                    />
-                    <button className="join-button" onClick={handleJoinRoom}>Join Friends!</button>
-                </div>
-                <div>
-                    <hr className="custom-hr"></hr>
-                    <button className="create-button" onClick={handleCreateRoom}>Create Room</button>
-                </div>
+                
+                {!isScreenNameEntered ? (
+                    <>
+                        <h1>Welcome to Yellow Bird Chat</h1>
+                        <div className="join-section">
+                            <input
+                                type="text"
+                                placeholder="Enter screen name"
+                                value={screenName}
+                                className="join-input"
+                                onChange={handleScreenNameChange}
+                                maxLength={10}
+                            />
+                            <button className="join-button" onClick={handleSubmitName}>Submit Name</button>
+                        </div>
 
+                    </>
+                ) : (
+                
+                <>
+                    <h1>Welcome, {screenName}!</h1>
+                    <div className="join-section">
+                        <input
+                            type="text"
+                            className="join-input"
+                            placeholder="room code"
+                            value={roomCode}
+                            onChange={(e) => setRoomCode(e.target.value)}
+                        />
+                        <button disabled={!isScreenNameEntered || !roomCode.trim()} className="join-button" onClick={handleJoinRoom}>Join Friends!</button>
+                    </div>
+                    <div>
+                        <hr className="custom-hr"></hr>
+                        <button disabled={!isScreenNameEntered} className="create-button" onClick={handleCreateRoom}>Create Room</button>
+                        <p></p>
+                        <button className="create-button" onClick={handleChangeName}>Update Name</button>
+                    </div>
+                </>
+                )}
             </div>
 
             )}
@@ -209,22 +250,3 @@ const ChatRoom = () => {
 };
 
 export default ChatRoom;
-
-
-                    // <div className="header">
-                    //     <div className="title">Yellow Bird Chatter</div>
-                    //     <div className="room-code">Room Code: {channel}</div>
-                    //     {isCreator ? (
-                    //         <button className="end-session-button" onClick={handleEndSession}>End Session</button>
-                    //     ) : (
-                    //         <button className="leave-session-button" onClick={handleLeaveSession}>Leave Session</button>
-                    //     )}
-                    // </div>
-
-                    // <ul>
-                    //     {messages.map((message) => (
-                    //         <li key={message.id}>
-                    //             <Message message={message} />
-                    //         </li>
-                    //     ))}
-                    // </ul>
