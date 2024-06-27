@@ -19,7 +19,7 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUs
         <div className="message-container">
             {messages.map((message) => (
                 <div key={message.id} className={message.senderId === currentUserId ? "my-message" : "other-message"}>
-                    <Message key={message.id} message={message} userId={currentUserId} />
+                    <Message key={message.id} message={message} currentUserId={currentUserId} />
                 </div>
             ))}
         </div>
@@ -27,3 +27,5 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUs
 };
 
 export default MessageContainer;
+
+//<Message key={message.id} message={message} userId={currentUserId} />q

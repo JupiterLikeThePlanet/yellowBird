@@ -54,6 +54,9 @@ const ChatRoom = () => {
          
         if (!channel) return;
 
+        pubnub.subscribe({ channels: [channel] });
+        fetchHistory();
+
         const handleMessage = (event: PubNub.MessageEvent) => {
             const newMessage: MessageObj = {
                 id: event.message.id,
@@ -81,13 +84,29 @@ const ChatRoom = () => {
         };
     }, [pubnub, channel]);
 
+    const fetchHistory = () => {
+        pubnub.fetchMessages({
+            channels: [channel],
+            count: 100  // Number of messages to retrieve
+        }).then((response) => {
+            const historicalMessages = response.channels[channel].map(msgEvent => ({
+                id: msgEvent.message.id,
+                text: msgEvent.message.text,
+                senderId: msgEvent.message.senderId,
+                screenName: msgEvent.message.screenName,
+                timestamp: new Date(Number(msgEvent.timetoken) / 10000)
+            }));
+            setMessages(historicalMessages);
+        }).catch(error => console.error('Error fetching historical messages:', error));
+    };
+
 
     const handleScreenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setScreenName(event.target.value);
     };
 
     const handleSubmitName = () => {
-        if (screenName.trim().length > 3) {
+        if (screenName.trim().length >= 3) {
             setIsScreenNameEntered(true);
             localStorage.setItem('screenName', screenName);
         } else {
@@ -114,17 +133,28 @@ const ChatRoom = () => {
         }
     };
 
+
+
     const subscribeToChannel = () => {
         pubnub.addListener({
-            message: (messageEvent) => {
-                setMessages(prevMessages => [...prevMessages, {
-                    ...messageEvent.message,
-                    timestamp: new Date(Number(messageEvent.timetoken) / 10000)
-                }]);
-            }
+            message: handleMessage
         });
+    
         pubnub.subscribe({ channels: [channel] });
     };
+
+    const handleMessage = (event: PubNub.MessageEvent) => {
+        const newMessage = {
+            id: event.message.id,
+            text: event.message.text,
+            senderId: event.message.senderId,
+            screenName: event.message.screenName,
+            timestamp: new Date(Number(event.timetoken) / 10000)
+        };
+    
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+    };
+
 
     const handleJoinRoom = async () => {
         if (roomCode.trim() && isScreenNameEntered) {
@@ -252,7 +282,7 @@ const ChatRoom = () => {
                         onLeaveSession={handleLeaveSession}
                     />
 
-                    <MessageContainer messages={messages} currentUserId={userId} />
+                    <MessageContainer messages={messages} currentUserId={userId}/>
 
                     <ChatInput onSendMessage={sendMessage} />
                 </>
