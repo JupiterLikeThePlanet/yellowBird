@@ -4,6 +4,8 @@ import { usePubNub } from 'pubnub-react';
 import MessageContainer from './MessageContainer';
 import ChatInput from './ChatInput';
 import Header from './Header';
+import ScreenName from './ScreenName';
+import JoinCreateRoom from './JoinCreateRoom';
 import '../styles/message.css';
 import '../styles/chatRoom.css';
 
@@ -244,42 +246,21 @@ const ChatRoom = () => {
             <div className="join-create-screen">
                 
                 {!isScreenNameEntered ? (
-                    <>
-                        <h1>Welcome to Yellow Bird Chat</h1>
-                        <div className="join-section">
-                            <input
-                                type="text"
-                                placeholder="Enter screen name"
-                                value={screenName}
-                                className="join-input"
-                                onChange={handleScreenNameChange}
-                                maxLength={10}
-                            />
-                            <button className="join-button" onClick={handleSubmitName}>Submit Name</button>
-                        </div>
-
-                    </>
+                    <ScreenName
+                        screenName={screenName}
+                        handleScreenNameChange={handleScreenNameChange}
+                        handleSubmitName={handleSubmitName}
+                    />
                 ) : (
-                
-                <>
-                    <h1>Welcome, {screenName}!</h1>
-                    <div className="join-section">
-                        <input
-                            type="text"
-                            className="join-input"
-                            placeholder="room code"
-                            value={roomCode}
-                            onChange={(e) => setRoomCode(e.target.value)}
-                        />
-                        <button disabled={!isScreenNameEntered || !roomCode.trim()} className="join-button" onClick={handleJoinRoom}>Join Friends!</button>
-                    </div>
-                    <div>
-                        <hr className="custom-hr"></hr>
-                        <button disabled={!isScreenNameEntered} className="create-button" onClick={handleCreateRoom}>Create Room</button>
-                        <p></p>
-                        <button className="create-button" onClick={handleChangeName}>Update Name</button>
-                    </div>
-                </>
+                    <JoinCreateRoom
+                        screenName={screenName}
+                        roomCode={roomCode}
+                        isScreenNameEntered={isScreenNameEntered}
+                        setRoomCode={setRoomCode}
+                        handleJoinRoom={handleJoinRoom}
+                        handleCreateRoom={handleCreateRoom}
+                        handleChangeName={handleChangeName}
+                    />
                 )}
             </div>
 
