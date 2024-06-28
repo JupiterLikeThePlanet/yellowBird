@@ -34,6 +34,7 @@
 
 /* functional behavior */
 .message-container {
+    overflow-x: auto;
     display: flex;
     align-items: start;
     overflow-y: auto;
@@ -96,10 +97,13 @@
 }
 
 /* responsive styles */
-@media (max-width: 765px) {
+@media (max-width: 768px) {
     .message-container {
-        height: calc(100vh - 100px);
-        margin-top: 60px;
+        height: 67vh;
+        margin-top: 7em;
+    }
+    .message {
+        max-width: 70%; 
     }
 }
 /* 
@@ -115,6 +119,14 @@
     .message-container {
         padding: 1%;
         margin-top: 8em;
-        height: 40vh;
+        /* height: 40vh; */
+        /* margin-top: 2em; */
+        height: 67vh;
+    }
+    .message {
+        max-width: 100%; 
+    }
+    .message-info {
+        font-size: 0.7rem; 
     }
 }
