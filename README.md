@@ -88,7 +88,32 @@ To run unit tests, open console and enter the following command:
 or for more specific tests, choose a test file like so:
 ```npm test -- ChatRoom.test.tsx```
 
-### ToDos
+# So what all did I do?
+- Created a landing page for creating a screen name
+- Created a Join / Create session page with the ability to either join a chat room in session or create a new one. Also has the option to go back create a screen name
+- Created a Chat Room page to chat back and forth with
+    1. Incorporates Pubnub to create chat rooms, fetch message history, and send messages
+    2. Uses Emoji Picker to allow use of emojis in chat and select from a library of emojis
+    3. Has a header to display room key and the ability to leave session. If no users are in a session the channel is nixed
+    4. Small animations on messages as they pop up
+
+- Persistence upon refresh or closed window for the following:
+    1. Screen names
+    2. room session 
+    3. up to 100 messages
+
+- Hit the requirements for the following:
+    1. Text balloons for each participant
+    2. Support single-line, multi-line (using a modifier like alt+enter or shift+enter), and emojis in the content
+    3.  Design should be responsive
+    4. Code is in Typescript
+
+- Tests written to cover components, run ```npm test```
+
+### Jupiter's ToDos
 - give submit name stuff their own classes
 - create a file for interface types
-- documentation
+- organize documentation with more markup code
+
+
+
