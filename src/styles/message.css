@@ -49,12 +49,13 @@
     margin-bottom: 5px;
 }
 
-.message-content p {
-    margin: 0;
+.message-content {
+    width: 172%;
     word-wrap: break-word;
     color: black;
-    text-align: left; 
+    text-align: left;
 }
+
 
 /* style for incoming text, user typing */
 

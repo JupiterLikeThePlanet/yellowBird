@@ -27,7 +27,7 @@ const Message: React.FC<MessageProps> = ({ message, currentUserId  }) => {
                 <span className="message-time">{formattedTime}</span>
             </div>
             <div className="message-content">
-                <p>{text}</p>
+                {text}
             </div>
         </div>
     );
