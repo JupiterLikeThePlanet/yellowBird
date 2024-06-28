@@ -23,8 +23,6 @@ const localStorageMock = (function() {
     };
 })();
 
-const handleScreenNameChange = jest.fn();
-const handleSubmitName = jest.fn();
 
 const pubnub = new PubNub({
     publishKey: 'evangelion',
