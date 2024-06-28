@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ScreenName from './ScreenName';
+import PubNub from 'pubnub';
+import { PubNubProvider } from 'pubnub-react';
 
 const localStorageMock = (function() {
     let store: Record<string, string> = {};
@@ -24,6 +26,12 @@ const localStorageMock = (function() {
 const handleScreenNameChange = jest.fn();
 const handleSubmitName = jest.fn();
 
+const pubnub = new PubNub({
+    publishKey: 'evangelion',
+    subscribeKey: 'neon genesis',
+    uuid: 'Unit00'
+});
+
 Object.defineProperty(window, 'localStorage', {
     value: localStorageMock
 });
@@ -31,6 +39,7 @@ Object.defineProperty(window, 'localStorage', {
 describe('ScreenName Component', () => {
     beforeEach(() => {
         localStorage.clear();
+        jest.clearAllMocks();
     });
 
     test('renders without crashing', () => {
@@ -44,22 +53,29 @@ describe('ScreenName Component', () => {
         expect(screen.getByPlaceholderText(/enter screen name/i)).toBeInTheDocument();
     });
 
-    // test('handles screen name submission correctly', () => {
-    //     render(
-    //         <ScreenName
-    //             screenName=""
-    //             handleScreenNameChange={handleScreenNameChange}
-    //             handleSubmitName={handleSubmitName}
-    //         />
-    //     );
-    //     fireEvent.change(screen.getByPlaceholderText(/enter screen name/i), { target: { value: 'Shinji' } });
-    //     fireEvent.click(screen.getByText(/submit name/i));
-    //     handleSubmitName();
-    //     expect(localStorage.getItem('screenName')).toBe('Shinji');
-    // });
+    test('localStorage mock works as expected', () => {
+        localStorage.setItem('screenName', 'Shinji');
+        expect(localStorage.getItem('screenName')).toBe('Shinji');
+    });
+
+    test('handles screen name submission correctly', () => {
+        const handleSubmitName = jest.fn(() => {
+            localStorage.setItem('screenName', 'Shinji');
+        });
+
+        render(
+            <PubNubProvider client={pubnub}>
+                <ScreenName handleSubmitName={handleSubmitName} />
+            </PubNubProvider>
+        );
+
+        fireEvent.change(screen.getByPlaceholderText(/enter screen name/i), { target: { value: 'Shinji' } });
+        fireEvent.click(screen.getByText(/submit name/i));
+        expect(localStorage.getItem('screenName')).toBe('Shinji');
+        expect(handleSubmitName).toHaveBeenCalled();
+    });
 
     test('allows user to change screen name', () => {
-        // const handleScreenNameChange = jest.fn();
         render(
             <ScreenName 
                 screenName="Rei"

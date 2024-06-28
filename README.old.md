@@ -28,13 +28,13 @@ issues with eslint:
 npm update eslint-plugin-jest @typescript-eslint/eslint-plugin react-scripts eslint-config-react-app
 
 
-
-
 # TESTS
 - Using Jest with `ts-jest` for handling TypeScript
 - React Testing Library is used for rendering components in the test environment.
 
-To run unit tests:
+To run unit tests, open console and enter the following command:
 ```npm test```
+or for more specific tests, choose a test file like so:
+```npm test -- ChatRoom.test.tsx```
 
 >> problem with files starting with ._
