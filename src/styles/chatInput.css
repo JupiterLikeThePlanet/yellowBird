@@ -24,6 +24,7 @@
 
 .emoji-button {
     padding: 8.5px;
+    /* padding: 12px 20px; */
     margin-right: 5px;
     background-color: #007bff;
     color: white;
@@ -58,4 +59,11 @@
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+
+@media (max-width: 1046px) {
+    .emoji-button {
+        padding: 11px;
+    }
 }

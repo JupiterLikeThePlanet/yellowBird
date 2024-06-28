@@ -40,10 +40,6 @@
 
 .message-info {
     display: flex;
-
-    /* justify-content: center; 
-    text-align: center;  */
-    
     font-size: 0.75rem;
     color: #666;
     margin-bottom: 5px;
@@ -76,10 +72,3 @@
     }
 }
 
-/* @media (max-width: 480px) {
-    .message-container {
-        padding: 1%;
-        margin-top: 2em;
-        height: 40vh;
-    }
-} */

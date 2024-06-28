@@ -1,46 +1,75 @@
-# Getting Started with Create React App
+# yellowbird
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Objective:
+Build a real-time, two-way chat application using ReactJS and integrate it with a free account on PubNub.
 
-In the project directory, you can run:
+## Task Details:
+To demonstrate your skills around front-end development and integration with 3rd party APIs, you are asked to build a
+fake real-time two-way chat between two clients.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## SETUP
+Prerequisites
+Node.js (v12.x or later)
+NPM (v6.x or later)
+- Ensure to configure PubNub Keys before deploying the app (see the pubnub setup section)
 
-### `npm test`
+- git clone <URL_OF_REPOSITORY>
+- ensure node and npm are installed and up to date.  Check in terminal using 'node -v' and 'npm -v" respectively.  If neither is installed or is out of date run:
+```
+sudo apt-get install nodejs
+npm install npm@latest || npm install -g npm@latest  
+```  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Otherwise in console, please first run 
+```
+npm install
+```
 
-### `npm run build`
+Then run
+```
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### pubnub setup 
+Obtain your keys from the PubNub dashboard and set them in your .env file 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Here is a link to creating keys
+> https://www.pubnub.com/how-to/admin-portal-create-keys/
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Create an Account:
+- Visit PubNub and sign up if you don’t already have an account.
+- If you already have an account, just log in.
 
-### `npm run eject`
+Create a New App:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Once logged in, navigate to the PubNub Dashboard.
+- Click on the "Create New App" button.
+- Enter a name for your app and confirm the creation.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Create a Keyset:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- After creating your app, you’ll be prompted to create a new Keyset.
+- Enter a name for your Keyset and create it.
+- You’ll be provided with a Publish Key and a Subscribe Key. Note these down.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+After creating your keys, create (if not already created) an ```.env``` file and set the keys as such
+```
+REACT_APP_SUBSCRIBE_KEY={enter your subscribe key here}
+REACT_APP_PUBLISH_KEY={enter your publish key here}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# TESTS
+To run unit tests, open console and enter the following command:
+```npm test```
+or for more specific tests, choose a test file like so:
+```npm test -- ChatRoom.test.tsx```
+
+### ToDos
+- give submit name stuff their own classes
+- create a file for interface types
+- documentation
