@@ -63,7 +63,11 @@ describe('ScreenName Component', () => {
 
         render(
             <PubNubProvider client={pubnub}>
-                <ScreenName handleSubmitName={handleSubmitName} />
+                <ScreenName
+                    screenName=""
+                    handleSubmitName={handleSubmitName} 
+                    handleScreenNameChange={() => {}}
+                />
             </PubNubProvider>
         );
 
