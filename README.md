@@ -114,6 +114,3 @@ or for more specific tests, choose a test file like so:
 - give submit name stuff their own classes
 - create a file for interface types
 - organize documentation with more markup code
-
-
-
