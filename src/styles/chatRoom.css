@@ -59,28 +59,53 @@
     border-top: 8px solid #333;
 }
 
-.message-container {
-    width: 100%;
-    max-width: 600px;
-    height: 400px;
-    margin: auto;
-    overflow-y: auto; 
-    border: 1px solid #ccc; 
-    background-color: #fff; 
-    padding: 10px; 
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 /* ------ --------- ------*/
 
 /* ------ Join View ------*/
+
+.join-create-screen {
+    /* background-color: #FFFF8F; */
+    text-align: center;
+    background-color: #8ffff0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: calc(10px + 2vmin);
+}
+
+.join-create-screen > h1 {
+    color: yellow;
+    /* outline-color: red;
+    outline-width: 2px;
+    outline-style: dashed; */
+    text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;
+}
+
+/* font for tablets and desktops */
+@media (min-width: 768px) {
+    .join-create-screen {
+        font-size: calc(12px + 2vmin); 
+    }
+}
+
+ /* More padding for larger screens */
+@media (min-width: 1024px) {
+    .join-create-screen {
+        padding: 40px;
+    }
+}
+
 .join-section {
     display: flex;
     align-items: center;
     justify-content: start;
     gap: 10px;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .join-input {
@@ -113,5 +138,13 @@
 
 .create-button:hover {
     background-color: #0056b3;
+}
+
+.custom-hr {
+    width: 12em;
+    border: none;
+    height: 2px;
+    background-color: #555454; 
+    margin-top: 20px;
 }
 /* ----------------------------- */
