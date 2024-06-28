@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Message from './Message';
+import '../styles/messageContainer.css';
 
 interface MessageProps {
     id: string;
@@ -15,8 +16,30 @@ interface MessageContainerProps {
 }
 
 const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUserId }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const prevScrollHeight = useRef(0);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            const { current } = containerRef;
+            const newMessageHeight = current.scrollHeight - prevScrollHeight.current;
+            if (current.scrollTop + current.clientHeight + newMessageHeight >= current.scrollHeight) {
+                current.scrollTop = current.scrollHeight;
+            }
+            prevScrollHeight.current = current.scrollHeight;
+        }
+    }, [messages]);
+
+    // useEffect(() => {
+    //     if (containerRef.current) {
+    //         const { scrollHeight, clientHeight } = containerRef.current;
+    //         containerRef.current.scrollTop = scrollHeight - clientHeight;
+    //     }
+    // }, [messages.length]); 
+    // ref={containerRef}
+
     return (
-        <div className="message-container">
+        <div className="message-container" ref={containerRef} >
             {messages.map((message) => (
                 <div key={message.id} className={message.senderId === currentUserId ? "my-message" : "other-message"}>
                     <Message key={message.id} message={message} currentUserId={currentUserId} />

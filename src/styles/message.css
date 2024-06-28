@@ -74,3 +74,11 @@
         font-size: 0.7rem;
     }
 }
+
+/* @media (max-width: 480px) {
+    .message-container {
+        padding: 1%;
+        margin-top: 2em;
+        height: 40vh;
+    }
+} */
