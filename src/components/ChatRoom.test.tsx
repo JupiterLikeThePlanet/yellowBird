@@ -91,5 +91,4 @@ describe('ChatRoom Component', () => {
         fireEvent.click(screen.getByText(/Update Name/i));
         expect(screen.getByPlaceholderText(/Enter screen name/i)).toBeInTheDocument();
     });
-
 });
