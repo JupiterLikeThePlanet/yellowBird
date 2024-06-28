@@ -38,3 +38,8 @@ or for more specific tests, choose a test file like so:
 ```npm test -- ChatRoom.test.tsx```
 
 >> problem with files starting with ._
+
+### ToDos
+- give submit name stuff their own classes
+- create a file for interface types
+- documenatation

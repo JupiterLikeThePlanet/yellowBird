@@ -17,9 +17,6 @@ interface MessageObj {
     screenName: string;
 }
 
-// give submit name stuff their own classes
-// create a file for interface types
-
 const ChatRoom = () => {
     const pubnub = usePubNub();
     const [messages, setMessages] = useState<MessageObj[]>([]);

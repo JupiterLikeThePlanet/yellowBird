@@ -1,0 +1,61 @@
+
+.join-section {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    /* padding: 10px; */
+}
+
+.join-input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.join-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.join-button:hover {
+    background-color: #218838;
+}
+
+.create-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-button:hover {
+    background-color: #0056b3;
+}
+
+.update-name-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cupdate-name-button:hover {
+    background-color: #0056b3;
+}
+
+.custom-hr {
+    width: 12em;
+    border: none;
+    height: 2px;
+    background-color: #555454; 
+    margin-top: 20px;
+}

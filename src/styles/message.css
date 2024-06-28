@@ -23,7 +23,7 @@
 }
 
 .my-message {
-    background-color: #eef8a4;
+    background-color: #00fffb; 
     align-self: flex-end;
     min-width: 30%;
     max-width: 50%;
@@ -31,7 +31,7 @@
 }
 
 .other-message {
-    background-color: #b6f9b1;
+    background-color: #4aff7d;
     align-self: flex-start;
     min-width: 30%;
     max-width: 50%;

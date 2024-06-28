@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/joinCreateRoom.css';
 
 interface JoinCreateRoomProps {
     screenName: string;
@@ -35,8 +36,9 @@ const JoinCreateRoom: React.FC<JoinCreateRoomProps> = ({
             <div>
                 <hr className="custom-hr"></hr>
                 <button disabled={!isScreenNameEntered} className="create-button" onClick={handleCreateRoom}>Create Room</button>
-                <p></p>
-                <button className="create-button" onClick={handleChangeName}>Update Name</button>
+               
+                <span> </span>
+                <button className="update-name-button" onClick={handleChangeName}>Update Name</button>
             </div>
         </>
     );
