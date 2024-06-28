@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ChatInput from './ChatInput';  // Adjust the import path as necessary
+import ChatInput from './ChatInput';
 
 describe('ChatInput Component', () => {
     const mockSendMessage = jest.fn();
