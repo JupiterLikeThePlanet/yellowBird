@@ -17,19 +17,11 @@ interface MessageObj {
     screenName: string;
 }
 
-// clean up header styles between header component and chatRoom component styles 
-// clear up the leave session and end session bug 
-// give submit name stuff their own classes
-// Maybe we don't need an end session, just leave session and if a room has 0 people in it, the channel is terminated
-// message container needs to be responsive at less that 765px to fit and stay below header
-// create a file for interface types
-
 const ChatRoom = () => {
     const pubnub = usePubNub();
     const [messages, setMessages] = useState<MessageObj[]>([]);
     const [channel, setChannel] = useState<string>('');
     const [roomCode, setRoomCode] = useState<string>('');
-    const [isCreator, setIsCreator] = useState<boolean>(false);
     const [screenName, setScreenName] = useState<string>('');
     const [isScreenNameEntered, setIsScreenNameEntered] = useState<boolean>(false);
     const [currentUserId, setCurrentUserId] = useState<string>(() => localStorage.getItem('currentUserId') || '');
@@ -45,10 +37,7 @@ const ChatRoom = () => {
     useEffect(() => {
         // useEffect for persistence
         const storedRoomCode = localStorage.getItem('chatRoomCode');
-        const storedIsCreator = localStorage.getItem('isCreator') === 'true';
         const storedScreenName = localStorage.getItem('screenName');
-        
-        localStorage.setItem('isCreator', 'false');
 
         if (storedScreenName) {
             setScreenName(storedScreenName);
@@ -58,7 +47,6 @@ const ChatRoom = () => {
         if (storedRoomCode) {
             setChannel(storedRoomCode);
             setRoomCode(storedRoomCode);
-            setIsCreator(storedIsCreator);
         }
     }, []);
 
@@ -92,7 +80,6 @@ const ChatRoom = () => {
             pubnub.removeListener({ message: handleMessage });
             pubnub.unsubscribeAll();
             localStorage.removeItem('chatRoomCode');  
-            localStorage.removeItem('isCreator');
         };
     }, [pubnub, channel]);
 
@@ -137,7 +124,6 @@ const ChatRoom = () => {
             const messagePayload = {
                 id: Date.now().toString(),
                 text: message,
-                // senderId: userId,
                 senderId: currentUserId,
                 screenName: screenName, 
                 timestamp: new Date()
@@ -145,8 +131,6 @@ const ChatRoom = () => {
             pubnub.publish({ channel, message: messagePayload });
         }
     };
-
-
 
     const subscribeToChannel = () => {
         pubnub.addListener({
@@ -176,7 +160,6 @@ const ChatRoom = () => {
                 setChannel(roomCode.trim());
                 // using localStorage to set creator
                 localStorage.setItem('chatRoomCode', roomCode.trim());
-                localStorage.setItem('isCreator', 'false');
             } else {
                 alert('Invalid room code');
             }
@@ -189,7 +172,6 @@ const ChatRoom = () => {
             setChannel(newRoomCode);
             setRoomCode(newRoomCode);
             localStorage.setItem('chatRoomCode', newRoomCode);
-            localStorage.setItem('isCreator', 'true');
         }
     };
 
@@ -200,7 +182,6 @@ const ChatRoom = () => {
             //https://www.pubnub.com/docs/general/presence/overview
             const response = await pubnub.hereNow({
                 channels: [code],
-                // includeUUIDs: false, /// keeping this for use later, look up
                 includeState: false
             });
     
@@ -221,7 +202,6 @@ const ChatRoom = () => {
         setMessages([]);
          
         localStorage.removeItem('chatRoomCode');  
-        localStorage.removeItem('isCreator');
          
         alert('Chat session ended.');
     };
@@ -234,9 +214,7 @@ const ChatRoom = () => {
         setRoomCode('');
         setMessages([]);
         // this is used to stop auto-rejoin / persistence on refresh
-        localStorage.removeItem('chatRoomCode'); 
-        localStorage.removeItem('isCreator');
-         
+        localStorage.removeItem('chatRoomCode');    
         alert('You have left the chat session.');
     };
 
@@ -269,8 +247,6 @@ const ChatRoom = () => {
                 <>
                     <Header 
                         channel={channel} 
-                        isCreator={isCreator} 
-                        onEndSession={handleEndSession} 
                         onLeaveSession={handleLeaveSession}
                     />
 

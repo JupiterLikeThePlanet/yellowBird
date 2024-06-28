@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/screenName.css';
 
 interface ScreenNameProps {
     screenName: string;
