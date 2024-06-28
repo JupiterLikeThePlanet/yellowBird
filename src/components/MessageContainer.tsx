@@ -30,14 +30,6 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUs
         }
     }, [messages]);
 
-    // useEffect(() => {
-    //     if (containerRef.current) {
-    //         const { scrollHeight, clientHeight } = containerRef.current;
-    //         containerRef.current.scrollTop = scrollHeight - clientHeight;
-    //     }
-    // }, [messages.length]); 
-    // ref={containerRef}
-
     return (
         <div className="message-container" ref={containerRef} >
             {messages.map((message) => (
@@ -50,5 +42,3 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUs
 };
 
 export default MessageContainer;
-
-//<Message key={message.id} message={message} userId={currentUserId} />q

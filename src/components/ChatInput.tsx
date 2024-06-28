@@ -10,59 +10,26 @@ interface EmojiData {
     emoji: string;
 }
 
-
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     const [message, setMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
+    // for multi line input textArea 
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setMessage(event.target.value);
+    };
 
-    ///// for single line input ///////////////////////////////////////////////////////////////
-    // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     //console.log("input values" + event.target.value)
-    //     // debugger
-    //     setMessage(event.target.value);
-    // };
-
-    // const handleKeyDown = (event: React.KeyboardEvent) => {
-    //     //debugger
-    //     // console.log("what key is being pressed: " + event.key)
-    //     console.log("is this a shift key: " + event.shiftKey)
-        
-    //     if (event.key === 'Enter' && !event.shiftKey) {
-    //         debugger
-    //         event.preventDefault();
-    //         sendMessage();
-    //     }
-    // };
-
-    // <input
-    //     type="text"
-    //     className="chat-input"
-    //     value={message}
-    //     onChange={handleInputChange}
-    //     onKeyDown={handleKeyDown}
-    //     placeholder="Type a message..."
-    // />
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    ///// for multi line input textArea ///////////////////////////////////////////////////////////////
-        const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setMessage(event.target.value);
-        };
-    
-        const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault(); 
-                if (message.trim() !== '') {
-                    onSendMessage(message.trim());
-                    setMessage(''); 
-                }
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); 
+            if (message.trim() !== '') {
+                onSendMessage(message.trim());
+                setMessage(''); 
             }
-        };
-    ///////////////////////////////////////////////////////////////////////////////
+        }
+    };
 
-    const onEmojiClick = (emojiData: EmojiData) => { // , event: React.MouseEvent<Element, MouseEvent>
+    const onEmojiClick = (emojiData: EmojiData) => { 
         setMessage(prevMessage => prevMessage + emojiData?.emoji); 
         setShowEmojiPicker(false);
     };
