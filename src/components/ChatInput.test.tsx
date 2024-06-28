@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import ChatInput from './ChatInput';  // Adjust the import path as necessary
 
 describe('ChatInput Component', () => {
+    const mockSendMessage = jest.fn();
+
     it('should render text area and buttons', () => {
         render(<ChatInput onSendMessage={jest.fn()} />);
         expect(screen.getByPlaceholderText(/chat up a storm/i)).toBeInTheDocument();
@@ -18,13 +20,20 @@ describe('ChatInput Component', () => {
         expect(input).toHaveValue('Hello, World!');
     });
 
-    it('should call onSendMessage when Enter is pressed and input is not empty', () => {
+    test('pressing Enter sends the message', () => {
         const mockOnSendMessage = jest.fn();
         render(<ChatInput onSendMessage={mockOnSendMessage} />);
         const input = screen.getByPlaceholderText(/chat up a storm/i);
         userEvent.type(input, 'Hello, World!{enter}');
-
         expect(mockOnSendMessage).toHaveBeenCalledWith('Hello, World!');
+    });
+
+    test('pressing send button triggers onSendMessage', () => {
+        render(<ChatInput onSendMessage={mockSendMessage} />);
+        const input = screen.getByPlaceholderText(/chat up a storm/i);
+        fireEvent.change(input, { target: { value: 'Hello' } });
+        fireEvent.click(screen.getByText('Send'));
+        expect(mockSendMessage).toHaveBeenCalledWith('Hello');
     });
 
     it('should clear input after sending message', async () => {
@@ -37,5 +46,14 @@ describe('ChatInput Component', () => {
             expect(input).toHaveValue('');
         });
     });
+
+    test('does not send empty messages', () => {
+        render(<ChatInput onSendMessage={mockSendMessage} />);
+        const input = screen.getByPlaceholderText(/chat up a storm/i);
+        fireEvent.change(input, { target: { value: '   ' } });
+        fireEvent.click(screen.getByText('Send'));
+        expect(mockSendMessage).not.toHaveBeenCalled();
+    });
+
 
 });
