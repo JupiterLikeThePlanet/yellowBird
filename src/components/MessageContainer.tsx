@@ -19,6 +19,10 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUs
     const containerRef = useRef<HTMLDivElement>(null);
     const prevScrollHeight = useRef(0);
 
+    const handleEditMessage = () => {
+
+    }
+
     useEffect(() => {
         if (containerRef.current) {
             const { current } = containerRef;
@@ -34,7 +38,7 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUs
         <div className="message-container" ref={containerRef} >
             {messages.map((message) => (
                 <div key={message.id} className={message.senderId === currentUserId ? "my-message" : "other-message"}>
-                    <Message key={message.id} message={message} currentUserId={currentUserId} />
+                    <Message key={message.id} message={message} currentUserId={currentUserId} onEditMessage={handleEditMessage} />
                 </div>
             ))}
         </div>
