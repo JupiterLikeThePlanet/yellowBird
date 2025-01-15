@@ -113,7 +113,6 @@ const ChatRoom = () => {
         }
     };
     
-
     const handleChangeName = () => {
         setIsScreenNameEntered(false);
         localStorage.removeItem('screenName'); 
@@ -131,6 +130,13 @@ const ChatRoom = () => {
             pubnub.publish({ channel, message: messagePayload });
         }
     };
+
+    const handleEditMessage = (id:string, updatedText:string) => {
+        setMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+                msg.id === id ? { ...msg, text: updatedText } : msg
+        ))
+    }
 
     const subscribeToChannel = () => {
         pubnub.addListener({
@@ -250,7 +256,7 @@ const ChatRoom = () => {
                         onLeaveSession={handleLeaveSession}
                     />
 
-                    <MessageContainer messages={messages} currentUserId={currentUserId}/>
+                    <MessageContainer messages={messages} currentUserId={currentUserId} handleEditMessage={handleEditMessage}/>
 
                     <ChatInput onSendMessage={sendMessage} />
                 </>

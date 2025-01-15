@@ -11,6 +11,27 @@
     animation: expand-bubble 0.3s ease-out forwards;
 }
 
+.edit-button {
+    border: none;
+    background: none;
+}
+
+.edit-icon {
+    width: 12px;
+    height: 11px;
+    object-fit: contain;
+    margin: 0; 
+    padding: 0; 
+
+    display: inline-flex; 
+    justify-content: center; 
+    align-items: center; 
+    /* padding: 5px;  */
+    border: none; 
+    background: none; 
+    cursor: pointer; 
+}
+
 @keyframes expand-bubble {
     from {
         transform: scale(0.8);

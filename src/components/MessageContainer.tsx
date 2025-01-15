@@ -13,15 +13,12 @@ interface MessageProps {
 interface MessageContainerProps {
     messages: MessageProps[];
     currentUserId: string;
+    handleEditMessage: (id:string, text:string) => void
 }
 
-const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUserId }) => {
+const MessageContainer: React.FC<MessageContainerProps> = ({ messages, currentUserId, handleEditMessage }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const prevScrollHeight = useRef(0);
-
-    const handleEditMessage = () => {
-
-    }
 
     useEffect(() => {
         if (containerRef.current) {
